@@ -22,7 +22,15 @@ class Solution : SolutionBase
 
     protected override string? SolvePartTwo()
     {
-        return null;
+        string[] ranges = Input.Split(",");
+        long result = (from line in ranges
+            select line.Split("-")
+            into split
+            let min = long.Parse(split[0])
+            let max = long.Parse(split[1])
+            select CheckSequencesAll(min, max)).Sum();
+
+        return result.ToString();
     }
 
     private static long CheckSequences(long min, long max)
@@ -39,5 +47,28 @@ class Solution : SolutionBase
         }
 
         return sequences;
+    }
+
+    private static long CheckSequencesAll(long min, long max)
+    {
+        HashSet<long> sequences = [];
+        for (long i = min; i <= max; i++)
+        {
+            string number = i.ToString();
+            int split = number.Length / 2;
+            for (int j = 1; j <= split; j++)
+            {
+                string pattern = number[..j];
+                bool patternRepeatsEveryTime = pattern.Length > 0 && number.Length % pattern.Length == 0 &&
+                                               Enumerable.Range(0, number.Length / pattern.Length).All(k =>
+                                                   number.Substring(k * pattern.Length, pattern.Length) == pattern);
+                if (patternRepeatsEveryTime)
+                {
+                    sequences.Add(i);
+                }
+            }
+        }
+
+        return sequences.Sum();
     }
 }
