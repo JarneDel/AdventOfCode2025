@@ -1,4 +1,4 @@
-namespace AdventOfCode.Solutions;
+namespace AdventOfCode.AdventOfCode.Solutions;
 
 public static class SolutionCollector
 {
@@ -8,7 +8,7 @@ public static class SolutionCollector
 
         foreach (int day in days)
         {
-            var type = Type.GetType($"AdventOfCode.Solutions.Year{year}.Day{day:D2}.Solution");
+            var type = Type.GetType($"AdventOfCode.AdventOfCode.Solutions.Year{year}.Day{day:D2}.Solution");
             if (type != null)
             {
                 if (Activator.CreateInstance(type) is SolutionBase solution)

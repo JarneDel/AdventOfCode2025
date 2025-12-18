@@ -1,4 +1,4 @@
-namespace AdventOfCode.Solutions;
+namespace AdventOfCode.AdventOfCode.Solutions;
 
 public struct SolutionResult
 {

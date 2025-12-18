@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace AdventOfCode.Solutions;
+namespace AdventOfCode.AdventOfCode.Solutions;
 
 public static class InputService
 {

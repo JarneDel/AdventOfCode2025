@@ -1,8 +1,8 @@
-namespace AdventOfCode.AdventOfCode.Solutions.Year2025.Day12;
+namespace AdventOfCode.AdventOfCode.Solutions.Year2025.Day22;
 
 class Solution : SolutionBase
 {
-    public Solution() : base(12, 2025, "") { }
+    public Solution() : base(22, 2025, "") { }
 
     protected override string? SolvePartOne()
     {

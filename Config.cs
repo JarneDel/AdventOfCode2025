@@ -1,6 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+namespace AdventOfCode;
+
 struct Config
 {
     public string Cookie { get; set; }

@@ -1,4 +1,4 @@
-namespace AdventOfCode.Solutions.Utils;
+namespace AdventOfCode.AdventOfCode.Solutions.Utils;
 
 public static class CollectionUtils
 {

@@ -1,4 +1,4 @@
-namespace AdventOfCode.Solutions.Year2025.Day10;
+namespace AdventOfCode.AdventOfCode.Solutions.Year2025.Day10;
 
 class Solution : SolutionBase
 {

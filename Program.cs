@@ -1,4 +1,5 @@
-﻿using AdventOfCode.Solutions;
+﻿using AdventOfCode;
+using AdventOfCode.AdventOfCode.Solutions;
 
 var config = Config.Get();
 var year = config.Year;
