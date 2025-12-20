@@ -41,7 +41,7 @@ class Solution : SolutionBase
         return result.ToString();
     }
 
-    protected override string? SolvePartTwo()
+    protected override string SolvePartTwo()
     {
         long result = 0;
         string[] lines = Input.Split('\n', StringSplitOptions.RemoveEmptyEntries);
@@ -54,21 +54,19 @@ class Solution : SolutionBase
 
             for (int digitPos = 0; digitPos < 12; digitPos++)
             {
-                // We need to leave (11 - digitPos) characters for the rest of the number
                 int remainingNeeded = 11 - digitPos;
                 int searchEnd = line.Length - remainingNeeded;
 
                 char bestChar = '0';
                 int bestIdx = currentSearchStart;
 
-                // Find the largest digit in the allowed range
                 for (int i = currentSearchStart; i < searchEnd; i++)
                 {
                     if (line[i] > bestChar)
                     {
                         bestChar = line[i];
                         bestIdx = i;
-                        if (bestChar == '9') break; // Optimization: can't do better than 9
+                        if (bestChar == '9') break;
                     }
                 }
 
@@ -81,5 +79,4 @@ class Solution : SolutionBase
 
         return result.ToString();
     }
-// ... existing code ...
 }
