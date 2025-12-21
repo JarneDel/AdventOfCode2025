@@ -8,6 +8,8 @@ public abstract class SolutionBase
     public int Day { get; }
     public int Year { get; }
     public bool Debug { get; set; }
+    public TimeProvider TimeProvider { get; set; } = TimeProvider.System;
+
 
     public string Title => LoadTitle(Debug);
     public string Input => LoadInput(Debug);
@@ -55,27 +57,20 @@ public abstract class SolutionBase
             throw new Exception("Input is null or empty");
         }
 
-        try
-        {
-            var then = DateTime.Now;
-            var result = SolverFunction();
-            var now = DateTime.Now;
-            return string.IsNullOrEmpty(result)
-                ? SolutionResult.Empty
-                : new SolutionResult { Answer = result, Time = now - then };
-        }
-        catch (Exception)
-        {
-            if (Debugger.IsAttached)
-            {
-                Debugger.Break();
-                return SolutionResult.Empty;
-            }
-            else
-            {
-                throw;
-            }
-        }
+        long startAllocatedBytes = GC.GetAllocatedBytesForCurrentThread();
+
+
+        long then = TimeProvider.GetTimestamp();
+        string? result = SolverFunction();
+
+        long endAllocatedBytes = GC.GetAllocatedBytesForCurrentThread();
+        long allocated = endAllocatedBytes - startAllocatedBytes;
+
+
+        TimeSpan duration = TimeProvider.GetElapsedTime(then);
+        return string.IsNullOrEmpty(result)
+            ? SolutionResult.Empty
+            : new SolutionResult { Answer = result, Time = duration, Memory = allocated };
     }
 
     private string InputsDirectory => $"./inputs/y{Year}/d{Day:D2}";
@@ -139,18 +134,20 @@ public abstract class SolutionBase
             Console.ForegroundColor = ConsoleColor.DarkRed;
             if (code == HttpStatusCode.BadRequest)
             {
-                Console.WriteLine($"Day {Day}: Received 400 when attempting to retrieve puzzle input. Your session cookie is probably not recognized.");
-
+                Console.WriteLine(
+                    $"Day {Day}: Received 400 when attempting to retrieve puzzle input. Your session cookie is probably not recognized.");
             }
             else if (code == HttpStatusCode.NotFound)
             {
-                Console.WriteLine($"Day {Day}: Received 404 when attempting to retrieve puzzle input. The puzzle is probably not available yet.");
+                Console.WriteLine(
+                    $"Day {Day}: Received 404 when attempting to retrieve puzzle input. The puzzle is probably not available yet.");
             }
             else
             {
                 Console.ForegroundColor = colour;
                 Console.WriteLine(e.ToString());
             }
+
             Console.ForegroundColor = colour;
         }
         catch (InvalidOperationException)
@@ -172,7 +169,7 @@ public abstract class SolutionBase
     string ResultToString(int part, SolutionResult result) =>
         $"  - Part{part} => " + (string.IsNullOrEmpty(result.Answer)
             ? "Unsolved"
-            : $"{result.Answer} ({result.Time.TotalMilliseconds}ms)");
+            : $"{result.Answer} ({result.Time.TotalMilliseconds}ms, {result.Memory / 1024.0:N2} KB)");
 
     protected abstract string? SolvePartOne();
     protected abstract string? SolvePartTwo();
